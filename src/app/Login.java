@@ -139,7 +139,7 @@ class Login extends JFrame
         ResultSet myres = null;
         String query = "Select * from bank_account"; // query for the database
         try {
-            mycon = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_login?zeroDateTimeBehaviour=convertToNull", "root", "NoPassword"); // Establishing onnection
+            mycon = DriverManager.getConnection("Database Url", "Username", "Your Password"); // Establishing onnection
             mystm = mycon.createStatement(); // Creating query statement
             myres = mystm.executeQuery(query); // Executing query
             boolean access = false;

@@ -152,7 +152,7 @@ public class Withdraw
         Connection conn = null;
         PreparedStatement pstat = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/java_login?zeroDateTimeBehaviour=convertToNull", "root", "NoPassword");
+            conn = DriverManager.getConnection("Database Url", "Username", "Your Password");
             pstat = conn.prepareStatement("UPDATE bank_account SET balance = ? where AccNo = ?");
             pstat.setDouble(1, balance);
             pstat.setString(2, accNo);
