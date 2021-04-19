@@ -1,9 +1,8 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -12,128 +11,108 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-// @author Nishith
-public class Withdraw
-{
+public class Withdraw {
 
     // <editor-fold defaultstate="collapsed" desc="Variables' Declaration">
-    JLabel l_username, l_accNo, l_withdraw, l_icon, line;
-    JTextField t_withdraw;
-    JButton b_withdraw;
-    ImageIcon withdraw_img, tick;
+    JLabel usernameLabel, accNoLabel, withdrawLabel, iconLabel, lineSeparator;
+    JTextField withdrawTextField;
+    JButton withdrawButton;
+    ImageIcon withdrawImage, tickImage;
     Timer timer = new Timer();
-//</editor-fold>
+    //</editor-fold>
 
-    public Withdraw(String username, String accountNo, JPanel withdraw)
-    {
+    public Withdraw(String username, String accountNo, JPanel withdraw) {
         // Label to display Account Name
-        l_username = new JLabel("Account Name: " + username);
-        l_username.setBounds(10, 10, 200, 30);
-        l_username.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_username.setForeground(Color.white);
-        withdraw.add(l_username);
+        usernameLabel = new JLabel("Account Name: " + username);
+        usernameLabel.setBounds(10, 10, 200, 30);
+        usernameLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        usernameLabel.setForeground(ColorUIResource.white);
+        withdraw.add(usernameLabel);
 
         // Label to display Account No
-        l_accNo = new JLabel("Account No: " + accountNo);
-        l_accNo.setBounds(10, 40, 200, 30);
-        l_accNo.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_accNo.setForeground(Color.white);
-        withdraw.add(l_accNo);
+        accNoLabel = new JLabel("Account No: " + accountNo);
+        accNoLabel.setBounds(10, 40, 200, 30);
+        accNoLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        accNoLabel.setForeground(ColorUIResource.white);
+        withdraw.add(accNoLabel);
 
-        // Seperating Line
-        line = new JLabel("__________________________________________________");
-        line.setBounds(0, 60, 400, 30);
-        line.setFont(new Font("Arial", Font.PLAIN, 14));
-        line.setForeground(Color.white);
-        withdraw.add(line);
+        // Separating Line
+        lineSeparator = new JLabel("__________________________________________________");
+        lineSeparator.setBounds(0, 60, 400, 30);
+        lineSeparator.setFont(new FontUIResource("Arial", FontUIResource.PLAIN, 14));
+        lineSeparator.setForeground(ColorUIResource.white);
+        withdraw.add(lineSeparator);
 
         // Label for withdraw amount
-        l_withdraw = new JLabel("Enter the amount to withdraw:");
-        l_withdraw.setBounds(10, 120, 200, 20);
-        l_withdraw.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_withdraw.setForeground(Color.white);
-        withdraw.add(l_withdraw);
+        withdrawLabel = new JLabel("Enter the amount to withdraw:");
+        withdrawLabel.setBounds(10, 120, 200, 20);
+        withdrawLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        withdrawLabel.setForeground(ColorUIResource.white);
+        withdraw.add(withdrawLabel);
 
-        // Textfield for withdraw amount
-        t_withdraw = new JTextField("0");
-        t_withdraw.setBounds(215, 120, 170, 25);
-        t_withdraw.setFont(new Font("MV Boli", Font.PLAIN, 12));
-        withdraw.add(t_withdraw);
+        // TextField for withdraw amount
+        withdrawTextField = new JTextField("0");
+        withdrawTextField.setBounds(215, 120, 170, 25);
+        withdrawTextField.setFont(new FontUIResource("MV Boli", FontUIResource.PLAIN, 12));
+        withdraw.add(withdrawTextField);
 
         // ImageIcons
-        withdraw_img = new ImageIcon(getClass().getResource("/media/withdraw-image.png"));
-        tick = new ImageIcon(getClass().getResource("/media/tick.gif"));
+        withdrawImage = new ImageIcon(getClass().getResource("/media/withdraw-image.png"));
+        tickImage = new ImageIcon(getClass().getResource("/media/tick.gif"));
         // Done label
-        l_icon = new JLabel();
-        l_icon.setBounds(175, 300, 85, 50);
-        l_icon.setForeground(Color.white);
-        withdraw.add(l_icon);
+        iconLabel = new JLabel();
+        iconLabel.setBounds(175, 300, 85, 50);
+        iconLabel.setForeground(ColorUIResource.white);
+        withdraw.add(iconLabel);
 
         // Withdraw button
-        b_withdraw = new JButton("Withdraw");
-        b_withdraw.setBounds(100, 170, 200, 30);
-        b_withdraw.setFont(new Font("Ink Free", Font.BOLD, 14));
-        b_withdraw.setIcon(withdraw_img);
+        withdrawButton = new JButton("Withdraw");
+        withdrawButton.setBounds(100, 170, 200, 30);
+        withdrawButton.setFont(new FontUIResource("Ink Free", FontUIResource.BOLD, 14));
+        withdrawButton.setIcon(withdrawImage);
         // <editor-fold defaultstate="collapsed" desc="Withdraw button Action and Key Listeners">
-        b_withdraw.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                double balance = 0;
-                Get_balance user1 = new Get_balance();
-                balance = user1.get_bal(accountNo, balance);
+        withdrawButton.addActionListener(ae -> {
+            double balance = 0;
+            GetBalance userBalance = new GetBalance();
+            balance = userBalance.getBalance(accountNo, balance);
 
-                if (balance >= Integer.parseInt(t_withdraw.getText())) {
-                    withdraw_bal(accountNo, (balance - Integer.parseInt(t_withdraw.getText())));
+            if (balance >= Integer.parseInt(withdrawTextField.getText())) {
+                withdrawBalance(accountNo, (balance - Integer.parseInt(withdrawTextField.getText())));
 
-                    l_icon.setIcon(tick);
-                    l_icon.setText("Done");
-                    t_withdraw.setText("0");
-                    timer.schedule(new TimerTask()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            l_icon.setIcon(null);
-                            l_icon.setText("");
-                        }
-                    }, 10000);
-                } else {
-                    JOptionPane.showMessageDialog(withdraw, "Not enough balance! :(");
-                }
+                iconLabel.setIcon(tickImage);
+                iconLabel.setText("Done");
+                withdrawTextField.setText("0");
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        iconLabel.setIcon(null);
+                        iconLabel.setText("");
+                    }
+                }, 10000);
+            } else {
+                JOptionPane.showMessageDialog(withdraw, "Not enough balance! :(");
             }
         });
-        b_withdraw.addKeyListener(new KeyAdapter()
-        {
+        withdrawButton.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent ke)
-            {
+            public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
                     double balance = 0;
-                    Get_balance user1 = new Get_balance();
-                    balance = user1.get_bal(accountNo, balance);
+                    GetBalance user1 = new GetBalance();
+                    balance = user1.getBalance(accountNo, balance);
 
-                    if (balance >= Integer.parseInt(t_withdraw.getText())) {
-                        withdraw_bal(accountNo, (balance - Integer.parseInt(t_withdraw.getText())));
+                    if (balance >= Integer.parseInt(withdrawTextField.getText())) {
+                        withdrawBalance(accountNo, (balance - Integer.parseInt(withdrawTextField.getText())));
 
-                        l_icon.setIcon(tick);
-                        l_icon.setText("Done");
-                        t_withdraw.setText("0");
-                        timer.schedule(new TimerTask()
-                        {
+                        iconLabel.setIcon(tickImage);
+                        iconLabel.setText("Done");
+                        withdrawTextField.setText("0");
+                        timer.schedule(new TimerTask() {
                             @Override
-                            public void run()
-                            {
-                                l_icon.setIcon(null);
-                                l_icon.setText("");
+                            public void run() {
+                                iconLabel.setIcon(null);
+                                iconLabel.setText("");
                             }
                         }, 10000);
                     } else {
@@ -143,24 +122,27 @@ public class Withdraw
             }
         });
 //</editor-fold>
-        withdraw.add(b_withdraw);
+        withdraw.add(withdrawButton);
     }
 
     // Method to withdraw money and update the balance
-    private void withdraw_bal(String accNo, double balance)
-    {
-        Connection conn = null;
-        PreparedStatement pstat = null;
+    private void withdrawBalance(String accNo, double balance) {
+        Connection connection;
+        PreparedStatement preparedStatement;
         try {
-            conn = DriverManager.getConnection("Database Url", "Username", "Your Password");
-            pstat = conn.prepareStatement("UPDATE bank_account SET balance = ? where AccNo = ?");
-            pstat.setDouble(1, balance);
-            pstat.setString(2, accNo);
+            connection = DriverManager.getConnection(
+                    System.getenv("BANKING_APP_DATABASE_URL"),
+                    System.getenv("MYSQL_USERNAME"),
+                    System.getenv("MYSQL_PASSWORD")
+            ); // Establishing connection
+            preparedStatement = connection.prepareStatement("UPDATE bank_account SET balance = ? where AccNo = ?");
+            preparedStatement.setDouble(1, balance);
+            preparedStatement.setString(2, accNo);
 
-            pstat.executeUpdate();
+            preparedStatement.executeUpdate();
 
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 

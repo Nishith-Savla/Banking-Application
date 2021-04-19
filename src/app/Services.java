@@ -1,66 +1,58 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.InsetsUIResource;
+import java.awt.*;
 
-// @author Nishith
-public class Services extends JFrame
-{
+public class Services extends JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Variables' Declaration">
-    JTabbedPane tabpane;
-    JPanel deposit, withdraw, checkbal;
+    JTabbedPane tabbedPane;
+    JPanel depositPanel, withdrawPanel, checkBalancePanel;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//</editor-fold>
+    //</editor-fold>
 
-    @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public Services(String username, String accountNo)
-    {
+    public Services(String username, String accountNo) {
         super("Services");
 
         // Panel for deposit
-        deposit = new JPanel();
-        new Deposit(username, accountNo, deposit); // Calling constructor of class Deposit to add the components
-        deposit.setLayout(null); // Changing layout from flowlayout to null
-        deposit.setBackground(Color.decode("#521a90"));
+        depositPanel = new JPanel();
+        new Deposit(username, accountNo, depositPanel); // Calling constructor of class Deposit to add the components
+        depositPanel.setLayout(null); // Changing layout from flowlayout to null
+        depositPanel.setBackground(ColorUIResource.decode("#521a90"));
 
         // Panel for withdraw
-        withdraw = new JPanel();
-        new Withdraw(username, accountNo, withdraw); // Calling constructor of class Withdraw to add the components
-        withdraw.setLayout(null); // Changing layout from flowlayout to null
-        withdraw.setBackground(Color.decode("#521a90"));
+        withdrawPanel = new JPanel();
+        new Withdraw(username, accountNo, withdrawPanel); // Calling constructor of class Withdraw to add the components
+        withdrawPanel.setLayout(null); // Changing layout from flowlayout to null
+        withdrawPanel.setBackground(ColorUIResource.decode("#521a90"));
 
         // Panel for withdraw
-        checkbal = new JPanel();
-        new CheckBalance(username, accountNo, checkbal); // Calling constructor of class CheckBalance to add the
+        checkBalancePanel = new JPanel();
+        new CheckBalance(username, accountNo, checkBalancePanel); // Calling constructor of class CheckBalance to add the
         // components
-        checkbal.setLayout(null); // Changing layout from flowlayout to null
-        checkbal.setBackground(Color.decode("#521a90"));
-        checkbal.setBorder(null);
+        checkBalancePanel.setLayout(null); // Changing layout from flowlayout to null
+        checkBalancePanel.setBackground(ColorUIResource.decode("#521a90"));
+        checkBalancePanel.setBorder(null);
 
         // Tabbed Pane to create tabs & add Panels to tabs
-        UIManager.put("TabbedPane.selected", Color.decode("#521a90"));
-        tabpane = new JTabbedPane();
-        tabpane.addTab("Deposit", deposit);
-        tabpane.addTab("Withdraw", withdraw);
-        tabpane.addTab("Check Balance", checkbal);
-        tabpane.setForeground(Color.orange);
+        UIManager.put("TabbedPane.selected", ColorUIResource.decode("#521a90"));
+        tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Deposit", depositPanel);
+        tabbedPane.addTab("Withdraw", withdrawPanel);
+        tabbedPane.addTab("Check Balance", checkBalancePanel);
+        tabbedPane.setForeground(ColorUIResource.orange);
 
-        Insets insets = UIManager.getInsets("TabbedPane.contentBorderInsets");
+        InsetsUIResource insets = (InsetsUIResource) UIManager.getInsets("TabbedPane.contentBorderInsets");
         insets.set(-1, -1, -1, -1); // Removing Insets
         UIManager.put("TabbedPane.contentBorderInsets", insets);
-        add(tabpane);
+        add(tabbedPane);
 
-        // Frame Constaints
-        getContentPane().setBackground(Color.orange);
+        // Frame Constraints
+        getContentPane().setBackground(ColorUIResource.orange);
         setDefaultCloseOperation(EXIT_ON_CLOSE); // To stop the program after the window is closed
-        setResizable(false); // Setting to set frame as unresizeable
+        setResizable(false); // Setting to set frame as non-resizeable
         setBounds(((int) screenSize.getWidth() / 2 - 200), ((int) screenSize.getHeight() / 2 - 200), 400, 400);
         setVisible(true);
 

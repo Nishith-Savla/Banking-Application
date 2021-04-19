@@ -1,92 +1,80 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 // @author Nishith
-public class CheckBalance
-{
+public class CheckBalance {
 
     // <editor-fold defaultstate="collapsed" desc="Variables' Declaration">
-    JLabel l_username, l_accNo, line, l_bal;
-    JButton b_bal;
-    ImageIcon checkbal_img;
-//</editor-fold>
+    JLabel usernameLabel, accNoLabel, lineSeparator, balanceLabel;
+    JButton balanceButton;
+    ImageIcon checkBalanceImage;
+    //</editor-fold>
 
-    public CheckBalance(String username, String accountNo, JPanel checkbal)
-    {
+    public CheckBalance(String username, String accountNo, JPanel checkBalancePanel) {
         // Label to display Account Name
-        l_username = new JLabel("Account Name: " + username);
-        l_username.setBounds(10, 10, 200, 30);
-        l_username.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_username.setForeground(Color.white);
-        checkbal.add(l_username);
+        usernameLabel = new JLabel("Account Name: " + username);
+        usernameLabel.setBounds(10, 10, 200, 30);
+        usernameLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        usernameLabel.setForeground(ColorUIResource.white);
+        checkBalancePanel.add(usernameLabel);
 
         // Label to display Account No
-        l_accNo = new JLabel("Account No: " + accountNo);
-        l_accNo.setBounds(10, 40, 200, 30);
-        l_accNo.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_accNo.setForeground(Color.white);
-        checkbal.add(l_accNo);
+        accNoLabel = new JLabel("Account No: " + accountNo);
+        accNoLabel.setBounds(10, 40, 200, 30);
+        accNoLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        accNoLabel.setForeground(ColorUIResource.white);
+        checkBalancePanel.add(accNoLabel);
 
-        // Seperating Line
-        line = new JLabel("__________________________________________________");
-        line.setBounds(0, 60, 400, 30);
-        line.setFont(new Font("Arial", Font.PLAIN, 14));
-        line.setForeground(Color.white);
-        checkbal.add(line);
+        // Separating Line
+        lineSeparator = new JLabel("__________________________________________________");
+        lineSeparator.setBounds(0, 60, 400, 30);
+        lineSeparator.setFont(new FontUIResource("Arial", FontUIResource.PLAIN, 14));
+        lineSeparator.setForeground(ColorUIResource.white);
+        checkBalancePanel.add(lineSeparator);
 
         // Label to display Account No
-        l_bal = new JLabel("", JLabel.CENTER);
-        l_bal.setBounds(100, 120, 200, 20);
-        l_bal.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 14));
-        l_bal.setForeground(Color.white);
-        checkbal.add(l_bal);
+        balanceLabel = new JLabel("", JLabel.CENTER);
+        balanceLabel.setBounds(100, 120, 200, 20);
+        balanceLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 14));
+        balanceLabel.setForeground(ColorUIResource.white);
+        checkBalancePanel.add(balanceLabel);
 
         // ImageIcon
-        checkbal_img = new ImageIcon(getClass().getResource("/media/check-balance.png"));
+        checkBalanceImage = new ImageIcon(getClass().getResource("/media/check-balance.png"));
 
         // Check balance button
-        b_bal = new JButton("Check Balance");
-        b_bal.setBounds(100, 170, 200, 30);
-        b_bal.setFont(new Font("Ink Free", Font.BOLD, 14));
-        b_bal.setIcon(checkbal_img);
+        balanceButton = new JButton("Check Balance");
+        balanceButton.setBounds(100, 170, 200, 30);
+        balanceButton.setFont(new FontUIResource("Ink Free", FontUIResource.BOLD, 14));
+        balanceButton.setIcon(checkBalanceImage);
+
         // <editor-fold defaultstate="collapsed" desc="Check Balance button Action and Key Listener">
-        b_bal.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                double balance = 0;
-                Get_balance user1 = new Get_balance();
-                balance = user1.get_bal(accountNo, balance);
-                l_bal.setText("Balance = " + balance);
-            }
+        balanceButton.addActionListener(ae -> {
+            double balance = 0;
+            GetBalance user1 = new GetBalance();
+            balance = user1.getBalance(accountNo, balance);
+            balanceLabel.setText("Balance = " + balance);
         });
-        b_bal.addKeyListener(new KeyAdapter()
-        {
+
+        balanceButton.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent ke)
-            {
+            public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
                     double balance = 0;
-                    Get_balance user1 = new Get_balance();
-                    balance = user1.get_bal(accountNo, balance);
-                    l_bal.setText("Balance = " + balance);
+                    GetBalance user1 = new GetBalance();
+                    balance = user1.getBalance(accountNo, balance);
+                    balanceLabel.setText("Balance = " + balance);
                 }
             }
-
         });
 //</editor-fold>
-        checkbal.add(b_bal);
+
+        checkBalancePanel.add(balanceButton);
     }
 
 }

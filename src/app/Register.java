@@ -1,295 +1,266 @@
 package app;
 
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-
-class Register extends JFrame
-{
+class Register extends JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Variables' Declaration">
-    private final JLabel l_name, heading, l_accNo, l_pass, l_cpass, l_age, l_gender, l_email;
-    private final String[] ages;
-    private final JButton button;
-    private JLabel error;
-    private JTextField t_name, t_accNo, t_email;
-    private JPasswordField p_pass, p_cpass;
-    private String gender, passText;
-    private JComboBox dropdown;
-    private JRadioButton male, female, other;
-    private ButtonGroup bg;
+    private final JLabel errorLabel;
+    private final JTextField nameTextField, accNoTextField, emailTextField;
+    private final JPasswordField passwordField, confirmPasswordField;
+    private final JComboBox<Short> dropdown;
+    private final JRadioButton maleRadioButton;
+    private final JRadioButton femaleRadioButton;
+    private final JRadioButton otherRadioButton;
     Dimension screenSize;
-//</editor-fold>
+    private String gender, passText;
+    //</editor-fold>
 
-    public Register()
-    {
+    public Register() {
         super("Form");
 
         // Title
-        heading = new JLabel("Registration Form");
-        heading.setFont(new Font("Arial", Font.PLAIN, 24));
-        heading.setBounds(100, 20, 200, 50);
-        add(heading);
+        JLabel headingLabel = new JLabel("Registration Form");
+        headingLabel.setFont(new FontUIResource("Arial", FontUIResource.PLAIN, 24));
+        headingLabel.setBounds(100, 20, 200, 50);
+        add(headingLabel);
 
         // Label for name
-        l_name = new JLabel("Enter your name: ");
-        l_name.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_name.setBounds(10, 100, 145, 20);
-        add(l_name);
+        JLabel nameLabel = new JLabel("Enter your name: ");
+        nameLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        nameLabel.setBounds(10, 100, 145, 20);
+        add(nameLabel);
 
-        // Textfield to get name
-        t_name = new JTextField();
-        t_name.setFont(new Font("Verdana", Font.PLAIN, 12));
-        t_name.setBounds(175, 100, 200, 25);
-        add(t_name);
+        // TextField to get name
+        nameTextField = new JTextField();
+        nameTextField.setFont(new FontUIResource("Verdana", FontUIResource.PLAIN, 12));
+        nameTextField.setBounds(175, 100, 200, 25);
+        add(nameTextField);
 
         // Label for username
-        l_accNo = new JLabel("Enter account no: ");
-        l_accNo.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_accNo.setBounds(10, 145, 145, 20);
-        add(l_accNo);
+        JLabel accNoLabel = new JLabel("Enter account no: ");
+        accNoLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        accNoLabel.setBounds(10, 145, 145, 20);
+        add(accNoLabel);
 
-        // Textfield to get username
-        t_accNo = new JTextField("BKAC");
-        t_accNo.setFont(new Font("Verdana", Font.PLAIN, 12));
-        t_accNo.setBounds(175, 145, 200, 25);
-        add(t_accNo);
+        // TextField to get username
+        accNoTextField = new JTextField("BKAC");
+        accNoTextField.setFont(new FontUIResource("Verdana", FontUIResource.PLAIN, 12));
+        accNoTextField.setBounds(175, 145, 200, 25);
+        add(accNoTextField);
 
         // Label for password
-        l_pass = new JLabel("Create Password: ");
-        l_pass.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_pass.setBounds(10, 190, 145, 20);
-        add(l_pass);
+        JLabel passwordLabel = new JLabel("Create Password: ");
+        passwordLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        passwordLabel.setBounds(10, 190, 145, 20);
+        add(passwordLabel);
 
-        // Passwordfield to get password
-        p_pass = new JPasswordField();
-        p_pass.setBounds(175, 190, 200, 25);
-        add(p_pass);
+        // PasswordField to get password
+        passwordField = new JPasswordField();
+        passwordField.setBounds(175, 190, 200, 25);
+        add(passwordField);
 
         // Label for password confirmation
-        error = new JLabel("");
-        error.setBounds(100, 265, 200, 20);
-        error.setFont(new Font("Courier New", Font.LAYOUT_NO_START_CONTEXT, 14));
-        error.setForeground(Color.red);
-        add(error);
+        errorLabel = new JLabel("");
+        errorLabel.setBounds(100, 265, 200, 20);
+        errorLabel.setFont(new FontUIResource("Courier New", FontUIResource.PLAIN, 14));
+        errorLabel.setForeground(ColorUIResource.red);
+        add(errorLabel);
 
         // Label for confirm password
-        l_cpass = new JLabel("Confirm Password: ");
-        l_cpass.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_cpass.setBounds(10, 235, 145, 20);
-        add(l_cpass);
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password: ");
+        confirmPasswordLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        confirmPasswordLabel.setBounds(10, 235, 145, 20);
+        add(confirmPasswordLabel);
 
-        // Passwordfield to get confirmed password
-        p_cpass = new JPasswordField();
-        p_cpass.setBounds(175, 235, 200, 25);
+        // PasswordField to get confirmed password
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setBounds(175, 235, 200, 25);
 
         // <editor-fold defaultstate="collapsed" desc="Key listeners (adapters) for real time password validation ">
-        p_pass.addKeyListener(new KeyAdapter()
-        {
+        passwordField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent ke)
-            {
-                for (int i = 0; i < p_pass.getPassword().length; i++) {
-                    if (Arrays.equals(p_pass.getPassword(), p_cpass.getPassword())) {
-                        error.setText("");
+            public void keyReleased(KeyEvent ke) {
+                for (int i = 0; i < passwordField.getPassword().length; i++) {
+                    if (Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())) {
+                        errorLabel.setText("");
                     } else {
-                        error.setText("Passwords Don't Match !");
+                        errorLabel.setText("Passwords Don't Match !");
                     }
                 }
             }
 
         });
-        p_cpass.addKeyListener(new KeyAdapter()
-        {
+
+        confirmPasswordField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent ke)
-            {
-                for (int i = 0; i < p_pass.getPassword().length; i++) {
-                    if (Arrays.equals(p_pass.getPassword(), p_cpass.getPassword())) {
-                        error.setText("");
+            public void keyReleased(KeyEvent ke) {
+                for (int i = 0; i < passwordField.getPassword().length; i++) {
+                    if (Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())) {
+                        errorLabel.setText("");
                     } else {
-                        error.setText("Passwords Don't Match !");
+                        errorLabel.setText("Passwords Don't Match !");
                     }
                 }
             }
 
         });
-        add(p_cpass);
+        add(confirmPasswordField);
 //</editor-fold>
 
         // Label for age
-        l_age = new JLabel("Enter your age: ");
-        l_age.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_age.setBounds(10, 300, 145, 20);
-        add(l_age);
+        JLabel ageLabel = new JLabel("Enter your age: ");
+        ageLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        ageLabel.setBounds(10, 300, 145, 20);
+        add(ageLabel);
 
         // Array of ages
-        ages = new String[100];
-        for (int i = 0; i < 100; i++) {
-            ages[i] = Integer.toString(i + 1); // Values for JCombobox
-        }
+        Short[] ages = new Short[100];
+        for (short i = 0; i < 100; ++i) ages[i] = (short) (i + 1); // Values for JCombobox
 
         // Combobox (Dropdown) for age
-        dropdown = new JComboBox(ages);
+        dropdown = new JComboBox<>(ages);
         dropdown.setBounds(175, 300, 200, 25);
         add(dropdown);
 
         // Label for gender
-        l_gender = new JLabel("Gender: ");
-        l_gender.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_gender.setBounds(10, 345, 90, 20);
-        add(l_gender);
+        JLabel genderLabel = new JLabel("Gender: ");
+        genderLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        genderLabel.setBounds(10, 345, 90, 20);
+        add(genderLabel);
 
         // Radio Buttons for gender
-        male = new JRadioButton("Male", true);
-        male.setBounds(110, 345, 80, 25);
-        male.setBackground(Color.decode("#00ffb6"));
-        add(male);
+        maleRadioButton = new JRadioButton("Male", true);
+        maleRadioButton.setBounds(110, 345, 80, 25);
+        maleRadioButton.setBackground(ColorUIResource.decode("#00ffb6"));
+        add(maleRadioButton);
 
-        female = new JRadioButton("Female", false);
-        female.setBounds(210, 345, 80, 25);
-        female.setBackground(Color.decode("#00ffb6"));
-        add(female);
+        femaleRadioButton = new JRadioButton("Female", false);
+        femaleRadioButton.setBounds(210, 345, 80, 25);
+        femaleRadioButton.setBackground(ColorUIResource.decode("#00ffb6"));
+        add(femaleRadioButton);
 
-        other = new JRadioButton("Other", false);
-        other.setBounds(310, 345, 80, 25);
-        other.setBackground(Color.decode("#00ffb6"));
-        add(other);
+        otherRadioButton = new JRadioButton("Other", false);
+        otherRadioButton.setBounds(310, 345, 80, 25);
+        otherRadioButton.setBackground(ColorUIResource.decode("#00ffb6"));
+        add(otherRadioButton);
 
         // Button group of radio buttons
-        bg = new ButtonGroup();
-        bg.add(male);
-        bg.add(female);
-        bg.add(other);
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(maleRadioButton);
+        buttonGroup.add(femaleRadioButton);
+        buttonGroup.add(otherRadioButton);
 
         // Label for email
-        l_email = new JLabel("Enter your email-id: ");
-        l_email.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_email.setBounds(10, 390, 145, 20);
-        add(l_email);
+        JLabel emailLabel = new JLabel("Enter your email-id: ");
+        emailLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        emailLabel.setBounds(10, 390, 145, 20);
+        add(emailLabel);
 
-        // Textfield to get email
-        t_email = new JTextField();
-        t_email.setFont(new Font("Verdana", Font.PLAIN, 12));
-        t_email.setBounds(175, 390, 200, 25);
-        add(t_email);
+        // TextField to get email
+        emailTextField = new JTextField();
+        emailTextField.setFont(new FontUIResource("Verdana", FontUIResource.PLAIN, 12));
+        emailTextField.setBounds(175, 390, 200, 25);
+        add(emailTextField);
 
-        // SUBMIT Button
-        button = new JButton("SUBMIT");
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        // Submit Button
+        JButton button = new JButton("SUBMIT");
+        button.setFont(new FontUIResource("Arial", FontUIResource.BOLD, 16));
         button.setBounds(140, 460, 100, 40);
-        button.setForeground(Color.black);
-        button.setBackground(Color.white);
+        button.setForeground(ColorUIResource.black);
+        button.setBackground(ColorUIResource.white);
 
         // <editor-fold defaultstate="collapsed" desc="Button Action and key listeners">
-        button.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                if (t_name.getText().equals("")) {
-                    JOptionPane.showMessageDialog(rootPane, "Name cannot be empty");
+        button.addActionListener(ae -> {
+            if (nameTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Name cannot be empty");
+            }
+
+            if (accNoTextField.getText().equals("BKAC")) {
+                JOptionPane.showMessageDialog(rootPane, "Username cannot be empty");
+            }
+
+            if (confirmPasswordField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Password cannot be empty");
+            }
+
+            if (emailTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Email-id cannot be empty");
+            }
+
+            if (!(nameTextField.getText().equals("") && accNoTextField.getText().equals("BKAC") && emailTextField.getText().equals("")
+                    && confirmPasswordField.getPassword().length == 0) && errorLabel.getText().equals("")) {
+                int confirm = JOptionPane.showConfirmDialog(rootPane, "Confirm Details", "Confirmation Dialog",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirm == 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Registration Successful");
+                    dispose();
                 }
 
-                if (t_accNo.getText().equals("BKAC")) {
-                    JOptionPane.showMessageDialog(rootPane, "Username cannot be empty");
+                if (maleRadioButton.isSelected()) {
+                    gender = "Male";
+                } else if (femaleRadioButton.isSelected()) {
+                    gender = "Female";
+                } else if (otherRadioButton.isSelected()) {
+                    gender = "Other";
                 }
 
-                if (p_cpass.getPassword().length == 0) {
-                    JOptionPane.showMessageDialog(rootPane, "Password cannot be empty");
-                }
-
-                if (t_email.getText().equals("")) {
-                    JOptionPane.showMessageDialog(rootPane, "Email-id cannot be empty");
-                }
-
-                if (!(t_name.getText().equals("") && t_accNo.getText().equals("BKAC") && t_email.getText().equals("")
-                        && p_cpass.getPassword().length == 0) && error.getText().equals("")) {
-                    int confirm = JOptionPane.showConfirmDialog(rootPane, "Confirm Details", "Confirmation Dialog",
-                            JOptionPane.YES_NO_OPTION);
-                    if (confirm == 0) {
-                        JOptionPane.showMessageDialog(rootPane, "Registration Successfull");
-                        dispose();
-                    }
-
-                    if (male.isSelected() == true) {
-                        gender = "Male";
-                    } else if (female.isSelected() == true) {
-                        gender = "Female";
-                    } else if (other.isSelected() == true) {
-                        gender = "Other";
-                    }
-
-                    passText = new String(p_cpass.getPassword());
-                    short age = Short.parseShort((String) dropdown.getItemAt(dropdown.getSelectedIndex()));
-                    new SQLinsert(t_name.getText(), t_accNo.getText(), passText, age, gender, t_email.getText());
-                    new Login();
-
-                }
+                passText = new String(confirmPasswordField.getPassword());
+                short age = dropdown.getItemAt(dropdown.getSelectedIndex());
+                new SQLInsert(nameTextField.getText(), accNoTextField.getText(), passText, age, gender, emailTextField.getText());
+                new Login();
 
             }
+
         });
-        button.addKeyListener(new KeyAdapter()
-        {
+        button.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent ke)
-            {
+            public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
                     {
-                        if (t_name.getText().equals("")) {
+                        if (nameTextField.getText().equals("")) {
                             JOptionPane.showMessageDialog(rootPane, "Name cannot be empty");
                         }
 
-                        if (t_accNo.getText().equals("BKAC")) {
+                        if (accNoTextField.getText().equals("BKAC")) {
                             JOptionPane.showMessageDialog(rootPane, "Username cannot be empty");
                         }
 
-                        if (p_cpass.getPassword().length == 0) {
+                        if (confirmPasswordField.getPassword().length == 0) {
                             JOptionPane.showMessageDialog(rootPane, "Password cannot be empty");
                         }
 
-                        if (t_email.getText().equals("")) {
+                        if (emailTextField.getText().equals("")) {
                             JOptionPane.showMessageDialog(rootPane, "Email-id cannot be empty");
                         }
 
-                        if (!(t_name.getText().equals("") && t_accNo.getText().equals("BKAC")
-                                && t_email.getText().equals("") && p_cpass.getPassword().length == 0)
-                                && error.getText().equals("")) {
+                        if (!(nameTextField.getText().equals("") && accNoTextField.getText().equals("BKAC")
+                                && emailTextField.getText().equals("") && confirmPasswordField.getPassword().length == 0)
+                                && errorLabel.getText().equals("")) {
                             int confirm = JOptionPane.showConfirmDialog(rootPane, "Confirm Details",
                                     "Confirmation Dialog", JOptionPane.YES_NO_OPTION);
                             if (confirm == 0) {
-                                JOptionPane.showMessageDialog(rootPane, "Registration Successfull");
+                                JOptionPane.showMessageDialog(rootPane, "Registration Successful");
                                 dispose();
                             }
 
-                            if (male.isSelected() == true) {
+                            if (maleRadioButton.isSelected()) {
                                 gender = "Male";
-                            } else if (female.isSelected() == true) {
+                            } else if (femaleRadioButton.isSelected()) {
                                 gender = "Female";
-                            } else if (other.isSelected() == true) {
+                            } else if (otherRadioButton.isSelected()) {
                                 gender = "Other";
                             }
-                            String passText = new String(p_cpass.getPassword());
-                            short age = Short.parseShort((String) dropdown.getItemAt(dropdown.getSelectedIndex()));
-                            new SQLinsert(t_name.getText(), t_accNo.getText(), passText, age, gender,
-                                    t_email.getText());
+                            String passText = new String(confirmPasswordField.getPassword());
+                            short age = dropdown.getItemAt(dropdown.getSelectedIndex());
+                            new SQLInsert(nameTextField.getText(), accNoTextField.getText(), passText, age, gender,
+                                    emailTextField.getText());
                             new Login();
                         }
 
@@ -299,11 +270,11 @@ class Register extends JFrame
 
         });
         add(button);
-//</editor-fold>
+        //</editor-fold>
 
         // Frame settings
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        getContentPane().setBackground(Color.decode("#00ffb6"));
+        getContentPane().setBackground(ColorUIResource.decode("#00ffb6"));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setLayout(null);

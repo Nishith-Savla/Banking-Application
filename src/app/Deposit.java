@@ -1,9 +1,8 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -12,143 +11,128 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-// @author Nishith
-public class Deposit
-{
+public class Deposit {
 
     // <editor-fold defaultstate="collapsed" desc="Variables' Declaration">
-    JLabel l_username, l_accNo, l_deposit, l_icon, line;
-    JTextField t_deposit;
-    JButton b_deposit;
-    ImageIcon deposit_img, tick;
+    JLabel usernameLabel, accNoLabel, depositLabel, iconLabel, lineSeparator;
+    JTextField depositTextField;
+    JButton depositButton;
+    ImageIcon depositImage, tickImage;
     Timer timer = new Timer();
 //</editor-fold>
 
-    public Deposit(String username, String accountNo, JPanel deposit)
-    {
+    public Deposit(String username, String accountNo, JPanel depositPanel) {
         // Label to display Account Name
-        l_username = new JLabel("Account Name: " + username);
-        l_username.setBounds(10, 10, 200, 30);
-        l_username.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_username.setForeground(Color.white);
-        deposit.add(l_username);
+        usernameLabel = new JLabel("Account Name: " + username);
+        usernameLabel.setBounds(10, 10, 200, 30);
+        usernameLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        usernameLabel.setForeground(ColorUIResource.white);
+        depositPanel.add(usernameLabel);
 
         // Label to display Account No
-        l_accNo = new JLabel("Account No: " + accountNo);
-        l_accNo.setBounds(10, 40, 200, 30);
-        l_accNo.setFont(new Font("Comic Sans MS", Font.CENTER_BASELINE, 16));
-        l_accNo.setForeground(Color.white);
-        deposit.add(l_accNo);
+        accNoLabel = new JLabel("Account No: " + accountNo);
+        accNoLabel.setBounds(10, 40, 200, 30);
+        accNoLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.CENTER_BASELINE, 16));
+        accNoLabel.setForeground(ColorUIResource.white);
+        depositPanel.add(accNoLabel);
 
-        // Seperating Line
-        line = new JLabel("__________________________________________________");
-        line.setBounds(0, 60, 400, 30);
-        line.setFont(new Font("Arial", Font.PLAIN, 14));
-        line.setForeground(Color.white);
-        deposit.add(line);
+        // Separating Line
+        lineSeparator = new JLabel("__________________________________________________");
+        lineSeparator.setBounds(0, 60, 400, 30);
+        lineSeparator.setFont(new FontUIResource("Arial", FontUIResource.PLAIN, 14));
+        lineSeparator.setForeground(ColorUIResource.white);
+        depositPanel.add(lineSeparator);
 
         // Label for deposit amount
-        l_deposit = new JLabel("Enter the amount to deposit:");
-        l_deposit.setBounds(10, 120, 200, 20);
-        l_deposit.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-        l_deposit.setForeground(Color.white);
-        deposit.add(l_deposit);
+        depositLabel = new JLabel("Enter the amount to deposit:");
+        depositLabel.setBounds(10, 120, 200, 20);
+        depositLabel.setFont(new FontUIResource("Comic Sans MS", FontUIResource.PLAIN, 14));
+        depositLabel.setForeground(ColorUIResource.white);
+        depositPanel.add(depositLabel);
 
-        // Textfield for deposit amount
-        t_deposit = new JTextField("0");
-        t_deposit.setBounds(215, 120, 170, 25);
-        t_deposit.setFont(new Font("MV Boli", Font.PLAIN, 12));
-        deposit.add(t_deposit);
+        // TextField for deposit amount
+        depositTextField = new JTextField("0");
+        depositTextField.setBounds(215, 120, 170, 25);
+        depositTextField.setFont(new FontUIResource("MV Boli", FontUIResource.PLAIN, 12));
+        depositPanel.add(depositTextField);
 
         // ImageIcons
-        deposit_img = new ImageIcon(getClass().getResource("/media/deposit-image.png"));
-        tick = new ImageIcon(getClass().getResource("/media/tick.gif"));
+        depositImage = new ImageIcon(getClass().getResource("/media/deposit-image.png"));
+        tickImage = new ImageIcon(getClass().getResource("/media/tick.gif"));
         // Done label
-        l_icon = new JLabel();
-        l_icon.setBounds(175, 300, 85, 50);
-        l_icon.setForeground(Color.white);
-        deposit.add(l_icon);
+        iconLabel = new JLabel();
+        iconLabel.setBounds(175, 300, 85, 50);
+        iconLabel.setForeground(ColorUIResource.white);
+        depositPanel.add(iconLabel);
 
         // Button to Deposit money
-        b_deposit = new JButton("Deposit");
-        b_deposit.setBounds(100, 170, 200, 30);
-        b_deposit.setFont(new Font("Ink Free", Font.BOLD, 14));
-        b_deposit.setIcon(deposit_img);
+        depositButton = new JButton("Deposit");
+        depositButton.setBounds(100, 170, 200, 30);
+        depositButton.setFont(new FontUIResource("Ink Free", FontUIResource.BOLD, 14));
+        depositButton.setIcon(depositImage);
         // <editor-fold defaultstate="collapsed" desc="Deposit button Action and Key Listeners">
-        b_deposit.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                double balance = 0;
-                Get_balance user1 = new Get_balance();
-                balance = user1.get_bal(accountNo, balance);
-                deposit_bal(accountNo, (balance + Integer.parseInt(t_deposit.getText())));
-                l_icon.setIcon(tick);
-                l_icon.setText("Done");
-                t_deposit.setText("0"); // Clear the textfield
-                timer.schedule(new TimerTask() // To hide the done icon and label after 10 secs
-                {
-                    @Override
-                    public void run()
-                    {
-                        l_icon.setIcon(null);
-                        l_icon.setText("");
-                    }
-                }, 10000);
+        depositButton.addActionListener(ae -> {
+            double balance = 0;
+            GetBalance user1 = new GetBalance();
+            balance = user1.getBalance(accountNo, balance);
+            depositBalance(accountNo, (balance + Integer.parseInt(depositTextField.getText())));
+            iconLabel.setIcon(tickImage);
+            iconLabel.setText("Done");
+            depositTextField.setText("0"); // Clear the TextField
+            timer.schedule(new TimerTask() { // To hide the done icon and label after 10 secs
+                @Override
+                public void run() {
+                    iconLabel.setIcon(null);
+                    iconLabel.setText("");
+                }
+            }, 10000);
 
-            }
         });
-        b_deposit.addKeyListener(new KeyAdapter()
-        {
+        depositButton.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent ke)
-            {
+            public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
                     double balance = 0;
-                    Get_balance user1 = new Get_balance();
-                    balance = user1.get_bal(accountNo, balance);
-                    deposit_bal(accountNo, (balance + Integer.parseInt(t_deposit.getText())));
-                    l_icon.setIcon(tick);
-                    l_icon.setText("Done");
-                    t_deposit.setText("0"); // Clear the textfield
+                    GetBalance user1 = new GetBalance();
+                    balance = user1.getBalance(accountNo, balance);
+                    depositBalance(accountNo, (balance + Integer.parseInt(depositTextField.getText())));
+                    iconLabel.setIcon(tickImage);
+                    iconLabel.setText("Done");
+                    depositTextField.setText("0"); // Clear the TextField
                     timer.schedule(new TimerTask() // To hide the done icon and label after 10 secs
                     {
                         @Override
-                        public void run()
-                        {
-                            l_icon.setIcon(null);
-                            l_icon.setText("");
+                        public void run() {
+                            iconLabel.setIcon(null);
+                            iconLabel.setText("");
                         }
                     }, 10000);
                 }
             }
         });
 //</editor-fold>
-        deposit.add(b_deposit);
+        depositPanel.add(depositButton);
     }
 
     // Method to deposit money and update the balance
-    public void deposit_bal(String accNo, double balance)
-    {
-        Connection conn = null;
-        PreparedStatement pstat = null;
+    public void depositBalance(String accNo, double balance) {
+        Connection connection;
+        PreparedStatement preparedStatement;
         try {
-            conn = DriverManager.getConnection("Database Url", "Username", "Your Password");
-            pstat = conn.prepareStatement("UPDATE bank_account SET balance = ? where AccNo = ?");
-            pstat.setDouble(1, balance);
-            pstat.setString(2, accNo);
+            connection = DriverManager.getConnection(
+                    System.getenv("BANKING_APP_DATABASE_URL"),
+                    System.getenv("MYSQL_USERNAME"),
+                    System.getenv("MYSQL_PASSWORD")
+            ); // Establishing connection
+            preparedStatement = connection.prepareStatement("UPDATE bank_account SET balance = ? where AccNo = ?");
+            preparedStatement.setDouble(1, balance);
+            preparedStatement.setString(2, accNo);
 
-            pstat.executeUpdate();
+            preparedStatement.executeUpdate();
 
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 
